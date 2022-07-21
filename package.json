@@ -1,0 +1,14 @@
+{
+  "name": "forecast",
+  "version": "1.0.0",
+  "description": "display the weather forecast using lat/long",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "devon barclay",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
