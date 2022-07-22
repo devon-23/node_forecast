@@ -1,5 +1,10 @@
 var url_base = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/"
 var api_key = ''
+var i = 0
+
+let config = {}
+let chartDoc = document.getElementById('myChart').getContext('2d')
+let myChart = new Chart(chartDoc, config);
 
 async function getWeather() {
     var location = document.getElementById('location').value
@@ -16,7 +21,7 @@ async function getWeather() {
     };
     const response = await fetch('/api', options)
     const json = await response.json()
-    console.log(json)
+    // console.log(json)
 
     makeChart()
 }
@@ -25,39 +30,49 @@ async function makeChart() {
     const response = await fetch('/api')
     const data = await response.json()
 
-    let myChart = document.getElementById('myChart').getContext('2d');
+    myChart.destroy()
 
+    var sortedData = data .sort((function (a, b) { return new Date(b.timestamp) - new Date(a.timestamp) }));
     
+    var opt = document.createElement('option')
+    opt.vale = sortedData[0].location
+    opt.innerHTML = sortedData[0].location
+    document.getElementById('city').appendChild(opt)
+
+    console.log(sortedData[0]);
+
+    const recentData = sortedData[0].results
+   
     Chart.defaults.global.defaultFontFamily = 'Arial';
     Chart.defaults.global.defaultFontSize = 18;
     Chart.defaults.global.defaultFontColor = '#777';
 
-    let temperature = new Chart(myChart, {
+    myChart = new Chart(chartDoc, {
         type: 'bar', //bar, horizontalBar, pie, line, doughnut, radar, polarArea
         data: {
-            labels: [data[0].days[0].datetime, data[0].days[1].datetime, data[0].days[2].datetime, data[0].days[3].datetime, data[0].days[4].datetime],
+            labels: [recentData.days[0].datetime, recentData.days[1].datetime, recentData.days[2].datetime, recentData.days[3].datetime, recentData.days[4].datetime],
             datasets: [
                 {
                     label: "High",
                     backgroundColor: "red",
-                    data: [data[0].days[0].tempmax, data[0].days[1].tempmax, data[0].days[2].tempmax, data[0].days[3].tempmax, data[0].days[4].tempmax]
+                    data: [recentData.days[0].tempmax, recentData.days[1].tempmax, recentData.days[2].tempmax, recentData.days[3].tempmax, recentData.days[4].tempmax]
                 },
                 {
                     label: "Average",
                     backgroundColor: 'Yellow',
-                    data: [data[0].days[0].temp, data[0].days[1].temp, data[0].days[2].temp, data[0].days[3].temp, data[0].days[4].temp]
+                    data: [recentData.days[0].temp, recentData.days[1].temp, recentData.days[2].temp, recentData.days[3].temp, recentData.days[4].temp]
                 },
                 {
                     label: "Low",
                     backgroundColor: 'blue',
-                    data: [data[0].days[0].tempmin, data[0].days[1].tempmin, data[0].days[2].tempmin, data[0].days[3].tempmin, data[0].days[4].tempmin]
+                    data: [recentData.days[0].tempmin, recentData.days[1].tempmin, recentData.days[2].tempmin, recentData.days[3].tempmin, recentData.days[4].tempmin]
                 }
             ]
         },
         options: {
             title: {
                 display: true,
-                text: `Weather forecast in ${data[0].location}`,
+                text: `Weather forecast in ${recentData.location}`,
                 fontSize: 25
             },
             legend: {
