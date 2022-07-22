@@ -40,9 +40,13 @@ async function makeChart() {
     document.getElementById('city').appendChild(opt)
 
     console.log(sortedData[0]);
+    
 
     const recentData = sortedData[0].results
-   
+    if(recentData.alerts.length > 0) {
+        window.alert(`WEATHER ADVISORY\n${recentData.alerts[0].event}\n${recentData.alerts[0].description}`)
+    }
+
     Chart.defaults.global.defaultFontFamily = 'Arial';
     Chart.defaults.global.defaultFontSize = 18;
     Chart.defaults.global.defaultFontColor = '#777';
@@ -70,9 +74,23 @@ async function makeChart() {
             ]
         },
         options: {
+            onClick: (e) => {
+                const points = myChart.getElementsAtEventForMode(e, 'nearest', {
+                    intersect: true }, true)
+                if(points[0]) {
+                    // const dataset = points[0]._datasetIndex
+                    const index = points[0]._index
+                    var weather = recentData.days[index]
+                    window.alert(`Weather Conditions: ${weather.conditions}`
+                    + `\nWeather description: ${weather.description}`
+                    )
+                    // console.log(myChart.data.datasets[dataset].data[index])
+                }
+                console.log(points)
+            },
             title: {
                 display: true,
-                text: `Weather forecast in ${recentData.location}`,
+                text: `Weather forecast in ${sortedData[0].location}`,
                 fontSize: 25
             },
             legend: {
