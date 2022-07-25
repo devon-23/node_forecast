@@ -38,10 +38,12 @@ app.get('/cities', (request, response) => {
     })
 })
 
-app.get('/test', (req, res) => {
+app.post('/test', (req, res) => {
     //console.log(req.body)
     console.log('hi')
-    var createTable = `SELECT * FROM Munich`
+    console.log(req.body.city)
+    var createTable = `SELECT * FROM ${req.body.city}`
+    console.log(createTable)
     db.query(createTable, (err, result) => {
         if(err) throw err
         res.json(result)

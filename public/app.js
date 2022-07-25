@@ -1,5 +1,5 @@
 var url_base = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/"
-var api_key = ''
+var api_key = 'F6WJPL5LWHX5DJV8ZDZJR6NEC'
 
 let config = {}
 let chartDoc = document.getElementById('myChart').getContext('2d')
@@ -47,7 +47,17 @@ async function getCities() {
 }
 
 async function makeChart() {
-    const response = await fetch('/test')
+    var city = document.getElementById('city').value
+    console.log(city)
+    var sendCity = {city: city}
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(sendCity)
+    };
+    const response = await fetch('/test', options)
     const data = await response.json()
     console.log(data[0].low)
 
@@ -96,7 +106,7 @@ async function makeChart() {
             // },
             title: {
                 display: true,
-                text: `Weather forecast in city`,
+                text: `Weather forecast in ${city}`,
                 fontSize: 25
             },
             legend: {
