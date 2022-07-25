@@ -7,10 +7,17 @@ let myChart = new Chart(chartDoc, config);
 
 async function getWeather() {
     var location = document.getElementById('location').value
-    const res = await fetch(`${this.url_base}${location}?unitGroup=us&key=${this.api_key}&contentType=json`)
+    const res = await fetch(`${this.url_base}${location}?unitGroup=us&include=days&key=${this.api_key}&contentType=json`)
     const results = await res.json()
 
-    const data = {results, location}
+    console.log(results.days)
+    const day1 = results.days[0]
+    const day2 = results.days[1]
+    const day3 = results.days[2]
+    const day4 = results.days[3]
+    const day5 = results.days[4]
+
+    const data = {day1, day2, day3, day4, day5, location}
     const options = {
         method: 'POST',
         headers: {
@@ -25,9 +32,10 @@ async function getWeather() {
     makeChart()
 }
 
-async function makeChart() {
+async function makeChart(location) {
     const response = await fetch('/api')
     const data = await response.json()
+    console.log(data)
 
     myChart.destroy()
 
