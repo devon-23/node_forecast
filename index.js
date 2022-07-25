@@ -1,3 +1,4 @@
+const { create } = require('domain')
 const express = require('express')
 
 const mysql = require('mysql')
@@ -36,14 +37,32 @@ app.get('/api', (request, response) => {
 app.post('/api', (request, response) => {
     console.log("I got a request!")
     
-    const data = request.body.day1
+    const data = request.body
     
-    let sql = 'INSERT INTO cities SET ?'
-    let weather = {name: request.body.location, high: data.tempmax, low: data.tempmin, avg: data.temp}
+    var city = request.body.location.split(' ').join('_')
+
+    db.query(`DROP TABLE IF EXISTS weather.${city}`)
+
+    var createTable = `CREATE TABLE IF NOT EXISTS ${city} (id int AUTO_INCREMENT, date text, high int, low int, avg int, cloud int, PRIMARY KEY (id));`
+    // condition text, description text,
     
-    let query = db.query(sql, weather, (err, result) => {
-        if (err) throw err
-        console.log(result)
+    db.query(createTable, (err, result) => {
+        if(err) throw err;
+        console.log('table created')
     })
+   
+    console.log(data.day1.datetime)
+    db.query(`INSERT INTO ${city} (date, high, low, avg, cloud) VALUES (
+        ${data.day1.datetime}, ${data.day1.tempmax}, ${data.day1.tempmin}, ${data.day1.temp}, ${data.day1.cloudcover}),
+        (${data.day2.datetime}, ${data.day2.tempmax}, ${data.day2.tempmin}, ${data.day2.temp}, ${data.day2.cloudcover}),
+        (${data.day3.datetime}, ${data.day3.tempmax}, ${data.day3.tempmin}, ${data.day3.temp}, ${data.day3.cloudcover}),
+        (${data.day4.datetime}, ${data.day4.tempmax}, ${data.day4.tempmin}, ${data.day4.temp}, ${data.day4.cloudcover}),
+        (${data.day5.datetime}, ${data.day5.tempmax}, ${data.day5.tempmin}, ${data.day5.temp}, ${data.day5.cloudcover}
+    )`)    
+
+    // let query = db.query(sql, weather, (err, result) => {
+    //     if (err) throw err
+    //     console.log(result)
+    // })
 
 })
