@@ -46,27 +46,12 @@ async function getCities() {
     }
 }
 
-async function makeChart(location) {
-    const response = await fetch('/api')
+async function makeChart() {
+    const response = await fetch('/test')
     const data = await response.json()
-    console.log(data)
+    console.log(data[0].low)
 
     myChart.destroy()
-
-    var sortedData = data .sort((function (a, b) { return new Date(b.timestamp) - new Date(a.timestamp) }));
-    
-    var opt = document.createElement('option')
-    opt.vale = sortedData[0].location
-    opt.innerHTML = sortedData[0].location
-    document.getElementById('city').appendChild(opt)
-
-    console.log(sortedData[0]);
-    
-
-    const recentData = sortedData[0].results
-    if(recentData.alerts.length > 0) {
-        window.alert(`WEATHER ADVISORY\n${recentData.alerts[0].event}\n${recentData.alerts[0].description}`)
-    }
 
     Chart.defaults.global.defaultFontFamily = 'Arial';
     Chart.defaults.global.defaultFontSize = 18;
@@ -75,43 +60,43 @@ async function makeChart(location) {
     myChart = new Chart(chartDoc, {
         type: 'bar', //bar, horizontalBar, pie, line, doughnut, radar, polarArea
         data: {
-            labels: [recentData.days[0].datetime, recentData.days[1].datetime, recentData.days[2].datetime, recentData.days[3].datetime, recentData.days[4].datetime],
+            labels: [data[0].date, data[1].date, data[2].date, data[3].date, data[4].date],
             datasets: [
                 {
                     label: "High",
                     backgroundColor: "red",
-                    data: [recentData.days[0].tempmax, recentData.days[1].tempmax, recentData.days[2].tempmax, recentData.days[3].tempmax, recentData.days[4].tempmax]
+                    data: [data[0].high, data[1].high, data[2].high, data[3].high, data[4].high]
                 },
                 {
                     label: "Average",
                     backgroundColor: 'Yellow',
-                    data: [recentData.days[0].temp, recentData.days[1].temp, recentData.days[2].temp, recentData.days[3].temp, recentData.days[4].temp]
+                    data: [data[0].avg, data[1].avg, data[2].avg, data[3].avg, data[4].avg]
                 },
                 {
                     label: "Low",
                     backgroundColor: 'blue',
-                    data: [recentData.days[0].tempmin, recentData.days[1].tempmin, recentData.days[2].tempmin, recentData.days[3].tempmin, recentData.days[4].tempmin]
+                    data: [data[0].low, data[1].low, data[2].low, data[3].low, data[4].low]
                 }
             ]
         },
         options: {
-            onClick: (e) => {
-                const points = myChart.getElementsAtEventForMode(e, 'nearest', {
-                    intersect: true }, true)
-                if(points[0]) {
-                    // const dataset = points[0]._datasetIndex
-                    const index = points[0]._index
-                    var weather = recentData.days[index]
-                    window.alert(`Weather Conditions: ${weather.conditions}`
-                    + `\nWeather description: ${weather.description}`
-                    )
-                    // console.log(myChart.data.datasets[dataset].data[index])
-                }
-                console.log(points)
-            },
+            // onClick: (e) => {
+            //     const points = myChart.getElementsAtEventForMode(e, 'nearest', {
+            //         intersect: true }, true)
+            //     if(points[0]) {
+            //         // const dataset = points[0]._datasetIndex
+            //         const index = points[0]._index
+            //         var weather = recentData.days[index]
+            //         window.alert(`Weather Conditions: ${weather.conditions}`
+            //         + `\nWeather description: ${weather.description}`
+            //         )
+            //         // console.log(myChart.data.datasets[dataset].data[index])
+            //     }
+            //     console.log(points)
+            // },
             title: {
                 display: true,
-                text: `Weather forecast in ${sortedData[0].location}`,
+                text: `Weather forecast in city`,
                 fontSize: 25
             },
             legend: {

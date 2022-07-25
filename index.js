@@ -1,6 +1,8 @@
 const { create } = require('domain')
 const express = require('express')
 
+var city = ''
+
 const mysql = require('mysql')
 
 const app = express()
@@ -30,22 +32,25 @@ app.get('/cities', (request, response) => {
 
     let query = db.query(tables, (err, results) => {
         if (err) throw err
-        console.log(results)
+        // console.log(results)
         response.json(results) 
         //instead of send yo ucan do response.json
     })
 })
 
-app.get('/api', (request, response) => {
-    var tables = "SELECT * FROM information_schema.tables WHERE TABLE_SCHEMA = weather"
-    // response.json(tables)
-
-    let query = db.query(tables, (err, results) => {
-        if (err) throw err
-        console.log(results)
-        response.json(results) 
-        //instead of send yo ucan do response.json
+app.get('/test', (req, res) => {
+    //console.log(req.body)
+    console.log('hi')
+    var createTable = `SELECT * FROM Munich`
+    db.query(createTable, (err, result) => {
+        if(err) throw err
+        res.json(result)
     })
+})
+
+app.get('/api', (request, response) => {
+    console.log(city)
+    var tables = "SELECT TABLE_NAME FROM information_schema.tables WHERE TABLE_SCHEMA = 'weather'"
 })
 
 app.post('/api', (request, response) => {
@@ -56,15 +61,13 @@ app.post('/api', (request, response) => {
     var city = request.body.location.split(' ').join('_')
 
     db.query(`DROP TABLE IF EXISTS weather.${city}`)
-
     var createTable = `CREATE TABLE IF NOT EXISTS ${city} (id int AUTO_INCREMENT, date VARCHAR(255), high int, low int, avg int, cloud int, PRIMARY KEY (id));`
-    // condition text, description text,
     
     db.query(createTable, (err, result) => {
         if(err) throw err;
         console.log('table created')
     })
-   
+
     console.log(`${data.day1.datetime}`)
 
     var insert = `INSERT INTO ${city} (date, high, low, avg, cloud) VALUES (
