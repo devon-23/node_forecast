@@ -5,6 +5,8 @@ let config = {}
 let chartDoc = document.getElementById('myChart').getContext('2d')
 let myChart = new Chart(chartDoc, config);
 
+getCities()
+
 async function getWeather() {
     var location = document.getElementById('location').value
     const res = await fetch(`${this.url_base}${location}?unitGroup=us&include=days&key=${this.api_key}&contentType=json`)
@@ -29,7 +31,19 @@ async function getWeather() {
     const json = await response.json()
     // console.log(json)
 
-    makeChart()
+    //makeChart()
+}
+
+async function getCities() {
+    const response = await fetch('/cities')
+    const data = await response.json()
+
+    for (item of data) {
+        var opt = document.createElement('option')
+        opt.value = item.TABLE_NAME
+        opt.innerHTML = item.TABLE_NAME
+        document.getElementById('city').appendChild(opt)
+    }
 }
 
 async function makeChart(location) {
