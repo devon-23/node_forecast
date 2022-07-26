@@ -1,5 +1,5 @@
 var url_base = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/"
-var api_key = 'F6WJPL5LWHX5DJV8ZDZJR6NEC'
+var api_key = ''
 
 let config = {}
 let chartDoc = document.getElementById('myChart').getContext('2d')
