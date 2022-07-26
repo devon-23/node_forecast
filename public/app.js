@@ -1,6 +1,6 @@
 var url_base = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/"
 var api_key = 'F6WJPL5LWHX5DJV8ZDZJR6NEC'
-let show = false
+let show = true
 let config = {}
 let chartDoc = document.getElementById('myChart').getContext('2d')
 let myChart = new Chart(chartDoc, config);
@@ -8,28 +8,40 @@ let myChart = new Chart(chartDoc, config);
 getCities()
 
 async function getWeather() {
+    var json = ''
+    document.querySelector(".popup-container").classList.remove("active")
+    var city = document.getElementById('city').value
     var location = document.getElementById('location').value
-    const res = await fetch(`${this.url_base}${location}?unitGroup=us&include=days&key=${this.api_key}&contentType=json`)
-    const results = await res.json()
-    console.log(results)
-    const day1 = results.days[0]
-    const day2 = results.days[1]
-    const day3 = results.days[2]
-    const day4 = results.days[3]
-    const day5 = results.days[4]
 
-    const data = {day1, day2, day3, day4, day5, location}
-    const options = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    };
-    const response = await fetch('/api', options)
-    const json = await response.json()
-    // location.reload();
-    //makeChart()
+    const res = await fetch(`${this.url_base}${location}?unitGroup=us&include=days&key=${this.api_key}&contentType=json`)
+
+    console.log(res)
+    if (res.status == 200) {
+        const results = await res.json()
+        console.log(results)
+        const day1 = results.days[0]
+        const day2 = results.days[1]
+        const day3 = results.days[2]
+        const day4 = results.days[3]
+        const day5 = results.days[4]
+
+        const data = {day1, day2, day3, day4, day5, location}
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        };
+        const response = await fetch('/api', options)
+        json = await response.json()
+
+        if (json !== '') {
+            if(!alert(`Successfully added ${json}`)){window.location.reload();}
+        } 
+    } else {
+        document.getElementById('wrong').innerHTML = "Could not add city. Maybe check spelling?"
+    }
 }
 
 async function getCities() {
@@ -45,6 +57,7 @@ async function getCities() {
 }
 
 async function makeChart() {
+    document.querySelector(".popup-container").classList.remove("active")
     var city = document.getElementById('city').value
     var sendCity = {city: city}
     const options = {
@@ -87,25 +100,22 @@ async function makeChart() {
         },
         options: {
             onClick: (e) => {
-                
                 const popContainer = document.querySelector(".popup-container")
 
                 if (this.show == true ) {
                     console.log("show")
-                    popContainer.classList.add("active")
+                    popContainer.classList.remove("active")
                     this.show = false
                 } else {
                     console.log("close")
                     this.show = true
-                    popContainer.classList.remove("active")
+                    popContainer.classList.add("active")
                 }
                 
                 const points = myChart.getElementsAtEventForMode(e, 'nearest', {
                     intersect: true }, true)
                 if(points[0]) {
                     const index = points[0]._index
-                    // window.alert(data[index].weather_desc)
-                    //headers --> column names (hard code)
                     const tr = document.querySelectorAll('tbody tr')[0]
                     tr.children[0].innerText = 'Date'
                     tr.children[1].innerText = 'High'

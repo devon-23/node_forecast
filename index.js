@@ -70,5 +70,8 @@ app.post('/api', (request, response) => {
     let query = db.query(insert, (err, result) => {
         if (err) throw err
         console.log(result)
+        //var send = {result, city}
+        response.json(city)
+   
     })
 })

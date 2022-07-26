@@ -36,3 +36,10 @@ tr:nth-child(even) {
     opacity: 1;
     pointer-events: auto;
   }
+
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 900px;
+  }
