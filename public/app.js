@@ -90,20 +90,14 @@ async function makeChart() {
             ]
         },
         options: {
-            // onClick: (e) => {
-            //     const points = myChart.getElementsAtEventForMode(e, 'nearest', {
-            //         intersect: true }, true)
-            //     if(points[0]) {
-            //         // const dataset = points[0]._datasetIndex
-            //         const index = points[0]._index
-            //         var weather = recentData.days[index]
-            //         window.alert(`Weather Conditions: ${weather.conditions}`
-            //         + `\nWeather description: ${weather.description}`
-            //         )
-            //         // console.log(myChart.data.datasets[dataset].data[index])
-            //     }
-            //     console.log(points)
-            // },
+            onClick: (e) => {
+                const points = myChart.getElementsAtEventForMode(e, 'nearest', {
+                    intersect: true }, true)
+                if(points[0]) {
+                    const index = points[0]._index
+                    window.alert(data[index].weatherdesc)
+                }
+            },
             title: {
                 display: true,
                 text: `Weather forecast in ${city}`,
