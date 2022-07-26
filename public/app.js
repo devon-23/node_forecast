@@ -1,5 +1,5 @@
 var url_base = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/"
-var api_key = ''
+var api_key = 'F6WJPL5LWHX5DJV8ZDZJR6NEC'
 
 let config = {}
 let chartDoc = document.getElementById('myChart').getContext('2d')
@@ -11,8 +11,7 @@ async function getWeather() {
     var location = document.getElementById('location').value
     const res = await fetch(`${this.url_base}${location}?unitGroup=us&include=days&key=${this.api_key}&contentType=json`)
     const results = await res.json()
-
-    console.log(results.days)
+console.log(results)
     const day1 = results.days[0]
     const day2 = results.days[1]
     const day3 = results.days[2]
@@ -29,7 +28,6 @@ async function getWeather() {
     };
     const response = await fetch('/api', options)
     const json = await response.json()
-    // console.log(json)
 
     //makeChart()
 }
@@ -48,7 +46,6 @@ async function getCities() {
 
 async function makeChart() {
     var city = document.getElementById('city').value
-    console.log(city)
     var sendCity = {city: city}
     const options = {
         method: 'POST',
@@ -59,7 +56,6 @@ async function makeChart() {
     };
     const response = await fetch('/test', options)
     const data = await response.json()
-    console.log(data[0].low)
 
     myChart.destroy()
 
