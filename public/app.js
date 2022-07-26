@@ -11,7 +11,7 @@ async function getWeather() {
     var location = document.getElementById('location').value
     const res = await fetch(`${this.url_base}${location}?unitGroup=us&include=days&key=${this.api_key}&contentType=json`)
     const results = await res.json()
-console.log(results)
+    console.log(results)
     const day1 = results.days[0]
     const day2 = results.days[1]
     const day3 = results.days[2]
@@ -28,7 +28,7 @@ console.log(results)
     };
     const response = await fetch('/api', options)
     const json = await response.json()
-
+    // location.reload();
     //makeChart()
 }
 
@@ -91,7 +91,7 @@ async function makeChart() {
                     intersect: true }, true)
                 if(points[0]) {
                     const index = points[0]._index
-                    window.alert(data[index].weatherdesc)
+                    window.alert(data[index].weather_desc)
                 }
             },
             title: {
