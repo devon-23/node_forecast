@@ -18,7 +18,6 @@ async function getWeather() {
     console.log(res)
     if (res.status == 200) {
         const results = await res.json()
-        console.log(results)
         const day1 = results.days[0]
         const day2 = results.days[1]
         const day3 = results.days[2]
@@ -100,12 +99,15 @@ async function makeChart() {
         },
         options: {
             onClick: (e) => {
-                var body = document.getElementById("body")
-                body.remove()
+                document.getElementById("body").remove()
+                document.getElementById("head").remove()
 
-                var g = document.createElement('tbody');
-                g.setAttribute("id", "body");
-                document.getElementById('table').appendChild(g)
+                var b = document.createElement('tbody');
+                var h = document.createElement('thead');
+                b.setAttribute("id", "body");
+                h.setAttribute("id", "head");
+                document.getElementById('table').appendChild(b)
+                document.getElementById('table').appendChild(h)
 
                 keys = Object.keys(data[0])
                 const popContainer = document.querySelector(".popup-container")
@@ -118,11 +120,14 @@ async function makeChart() {
                     popContainer.classList.add("active")
                 }
                 
-                const tr = document.querySelectorAll('tbody tr')[0]
-
+                var headroot = document.createElement('tr')
+                var headarr = []
                 for (var i = 1; i < Object.keys(data[0]).length; i++) {
-                    tr.children[i-1].innerText = keys[i]
+                    headarr[i] = document.createElement('th')
+                    headarr[i].innerText = keys[i]
                 }
+                headarr.forEach(x => headroot.append(x))
+                document.getElementById('head').appendChild(headroot)
 
                 for (item of data) {
                     var values = Object.values(item)
