@@ -100,6 +100,7 @@ async function makeChart() {
         },
         options: {
             onClick: (e) => {
+                keys = Object.keys(data[0])
                 const popContainer = document.querySelector(".popup-container")
 
                 if (this.show == true ) {
@@ -112,30 +113,31 @@ async function makeChart() {
                     popContainer.classList.add("active")
                 }
                 
-                const points = myChart.getElementsAtEventForMode(e, 'nearest', {
-                    intersect: true }, true)
-                if(points[0]) {
+                const points = myChart.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true)
+
+                if (points[0]) {
+                    console.log(Object.keys(data[0]))
                     const index = points[0]._index
                     const tr = document.querySelectorAll('tbody tr')[0]
-                    tr.children[0].innerText = 'Date'
-                    tr.children[1].innerText = 'High'
-                    tr.children[2].innerText = 'Low'
-                    tr.children[3].innerText = 'Average'
-                    tr.children[4].innerText = 'Dew'
-                    tr.children[5].innerText = 'UV Index'
-                    tr.children[6].innerText = 'Condition'
-                    tr.children[7].innerText = 'Description'
 
-                    for (var i = 0; i <= 7; i++) {
-                        const td = document.querySelectorAll('tbody tr')[i+1]
-                        td.children[0].innerText = data[i].date
-                        td.children[1].innerText = data[i].high
-                        td.children[2].innerText = data[i].low
-                        td.children[3].innerText = data[i].avg
-                        td.children[4].innerText = data[i].dew
-                        td.children[5].innerText = data[i].uv_index
-                        td.children[6].innerText = data[i].conditions
-                        td.children[7].innerText = data[i].weather_desc
+                    for (var i = 1; i < Object.keys(data[0]).length; i++) {
+                        tr.children[i-1].innerText = keys[i]
+                    }
+
+                    for (item of data) {
+                        console.log(Object.keys(item)[0])
+                        console.log('test')
+                        var root = document.createElement('tr')
+
+                        var th1 = document.createElement('th')
+                        th1.textContent = item.date
+
+                        var th2 = document.createElement('th')
+                        th2.textContent = item.high
+
+                        root.append(th1, th2)
+                        document.getElementById('table').appendChild(root)
+                        console.log(item.date)
                     }
                 }
             },
