@@ -111,11 +111,9 @@ async function makeChart() {
                 const popContainer = document.querySelector(".popup-container")
 
                 if (this.show == true ) {
-                    console.log("show")
                     popContainer.classList.remove("active")
                     this.show = false
                 } else {
-                    console.log("close")
                     this.show = true
                     popContainer.classList.add("active")
                 }
@@ -134,12 +132,8 @@ async function makeChart() {
                     for (var i = 1; i < values.length; i++) {
                         arr[i] = document.createElement('th')
                         arr[i].textContent = values[i] 
-                        console.log(i)
                     }
-
-                    for (var j = 1; j < arr.length; j++) {
-                        root.append(arr[j])
-                    }
+                    arr.forEach(x => root.append(x))
                     document.getElementById('body').appendChild(root)
                 }
             },
