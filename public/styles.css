@@ -15,7 +15,7 @@ tr:nth-child(even) {
 }
 
 .popup-container {
-    width: 600px;
+    width: 800px;
     background: #edf6f9;
     position: fixed;
     left: 50%;

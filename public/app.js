@@ -100,6 +100,13 @@ async function makeChart() {
         },
         options: {
             onClick: (e) => {
+                var body = document.getElementById("body")
+                body.remove()
+
+                var g = document.createElement('tbody');
+                g.setAttribute("id", "body");
+                document.getElementById('table').appendChild(g)
+
                 keys = Object.keys(data[0])
                 const popContainer = document.querySelector(".popup-container")
 
@@ -113,32 +120,27 @@ async function makeChart() {
                     popContainer.classList.add("active")
                 }
                 
-                const points = myChart.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true)
+                const tr = document.querySelectorAll('tbody tr')[0]
 
-                if (points[0]) {
-                    console.log(Object.keys(data[0]))
-                    const index = points[0]._index
-                    const tr = document.querySelectorAll('tbody tr')[0]
+                for (var i = 1; i < Object.keys(data[0]).length; i++) {
+                    tr.children[i-1].innerText = keys[i]
+                }
 
-                    for (var i = 1; i < Object.keys(data[0]).length; i++) {
-                        tr.children[i-1].innerText = keys[i]
+                for (item of data) {
+                    var values = Object.values(item)
+                    var root = document.createElement('tr')
+                    var arr = []
+
+                    for (var i = 1; i < values.length; i++) {
+                        arr[i] = document.createElement('th')
+                        arr[i].textContent = values[i] 
+                        console.log(i)
                     }
 
-                    for (item of data) {
-                        console.log(Object.keys(item)[0])
-                        console.log('test')
-                        var root = document.createElement('tr')
-
-                        var th1 = document.createElement('th')
-                        th1.textContent = item.date
-
-                        var th2 = document.createElement('th')
-                        th2.textContent = item.high
-
-                        root.append(th1, th2)
-                        document.getElementById('table').appendChild(root)
-                        console.log(item.date)
+                    for (var j = 1; j < arr.length; j++) {
+                        root.append(arr[j])
                     }
+                    document.getElementById('body').appendChild(root)
                 }
             },
             title: {
