@@ -7,6 +7,12 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
         <title>Forecasts</title>
         <link href="styles.css" rel="stylesheet">
+        
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css"/>
+ 
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+
     </head>
     <body>
         <h1>Weather Forecast</h1>
@@ -21,21 +27,20 @@
         <select id="city" name="city"></select>
         <button type="submit" onclick="makeChart()">Submit</button>
 
-        <div class="popup-container">
-            <div class="popup-content">
-                <div class="popup-details">
-                    <table id="table">
-                        <thead id="head"></thead>
-                        <tbody id="body"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
         <div class="container">
             <canvas id="myChart"></canvas>
         </div>
 
+        <table id="table_id" class="display">
+            <thead id="head"></thead>
+            <tbody id="body"></tbody>
+        </table>
+
         <script src="app.js"></script>
+        <script>
+            $(document).ready( function () {
+                $('#table_id').DataTable();
+            } );
+        </script>
     </body>
 </html>

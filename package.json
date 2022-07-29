@@ -9,7 +9,10 @@
   "author": "devon barclay",
   "license": "ISC",
   "dependencies": {
+    "datatables.net": "^1.12.1",
+    "datatables.net-dt": "^1.12.1",
     "express": "^4.18.1",
+    "jquery": "^3.6.0",
     "mysql": "^2.18.1"
   }
 }

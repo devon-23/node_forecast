@@ -9,7 +9,7 @@ getCities()
 
 async function getWeather() {
     var json = ''
-    document.querySelector(".popup-container").classList.remove("active")
+    // document.querySelector(".popup-container").classList.remove("active")
     var city = document.getElementById('city').value
     var location = document.getElementById('location').value
 
@@ -56,7 +56,7 @@ async function getCities() {
 }
 
 async function makeChart() {
-    document.querySelector(".popup-container").classList.remove("active")
+    // document.querySelector("table").classList.remove("active")
     var city = document.getElementById('city').value
     var sendCity = {city: city}
     const options = {
@@ -106,19 +106,19 @@ async function makeChart() {
                 var h = document.createElement('thead');
                 b.setAttribute("id", "body");
                 h.setAttribute("id", "head");
-                document.getElementById('table').appendChild(b)
-                document.getElementById('table').appendChild(h)
+                document.getElementById('table_id').appendChild(b)
+                document.getElementById('table_id').appendChild(h)
 
                 keys = Object.keys(data[0])
-                const popContainer = document.querySelector(".popup-container")
+                const tableCon = document.querySelector("table_id")
 
-                if (this.show == true ) {
-                    popContainer.classList.remove("active")
-                    this.show = false
-                } else {
-                    this.show = true
-                    popContainer.classList.add("active")
-                }
+                // if (this.show == true ) {
+                //     tableCon.classList.remove("active")
+                //     this.show = false
+                // } else {
+                //     this.show = true
+                //     tableCon.classList.add("active")
+                // }
                 
                 var headroot = document.createElement('tr')
                 var headarr = []
